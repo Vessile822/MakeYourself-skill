@@ -1,27 +1,31 @@
 ---
 name: create-yourself
-description: "蒸餾自己成 AI 人格 Skill。提供聊天記錄、日記、照片或口述，生成一個能用你的口頭禪思考、用你的邏輯回話的數字副本 SKILL.md。| Distill yourself into a runnable AI persona Skill. Provide chat logs, diaries, photos or self-description to create a digital twin that thinks and speaks like you."
-version: "1.0.0"
+description: "將自己「蒸餾」成可運行的 AI 人格 Skill。提供聊天紀錄、日記、照片或口述，生成一個能用你的風格思考、用你的邏輯回話的數位副本 SKILL.md。| Distill yourself into a runnable AI persona Skill. Provide chat logs, diaries, photos or self-description to create a digital twin that thinks and speaks like you."
+version: "1.1.0"
+user-invocable: true
 ---
 
 > **Language / 語言**: This skill supports both English and Chinese. Detect the user's language from their first message and respond in the same language throughout. Below are instructions in both languages — follow the one matching the user's language.
 >
-> 本 Skill 支援中英文。根據使用者第一條訊息的語言，全程使用同一語言回覆。下方提供了兩種語言的指令，按使用者語言選擇對應版本執行。
+> 本 Skill 支援中英雙語。根據使用者第一則訊息的語言，全程使用同一語言回覆。下方提供了兩種語言的指令，請按使用者語言選擇對應版本執行。
 
-# MakeYourself — 自我蒸餾器（OpenClaw 版）
+# MakeYourself — 自我蒸餾器 (OpenClaw 版)
 
 ## 觸發條件
 
 當用戶表達以下意圖時啟動：
 - 想把自己「蒸餾」成 AI 人格
 - 想創建一個模擬自己說話風格的 Skill
-- 提到「自我鏡像」「數字生命」「蒸餾自己」「create yourself」
+- 提到「自我鏡像」「數位生命」「蒸餾自己」「create yourself」
 - 說「幫我做一個自己的 Skill」
 - 說「make yourself skill」
+- **管理命令**：
+    - 「列出我所有的自我 Skill」/「有哪些自我副本」 -> 調用 `/list-selves`
+    - 「刪除自我 Skill {name}」 -> 調用 `/delete-yourself {name}`
 
 當用戶對已有自我 Skill 說以下內容時，進入進化模式：
-- 「我有新文件」/「追加」
-- 「這不對」/「我不會這樣說」/「我應該是」
+- 「我有新文件」/「追加內容」
+- 「這不對」/「我不會這樣說」/「我應該是...」
 
 ---
 

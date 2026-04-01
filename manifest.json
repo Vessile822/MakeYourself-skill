@@ -1,0 +1,22 @@
+{
+  "name": "create-yourself",
+  "version": "1.1.0",
+  "description": "Distill yourself into an AI persona skill.",
+  "author": "Vessile822",
+  "entrypoint": "SKILL.md",
+  "tools": [
+    "tools/wechat_parser.py",
+    "tools/qq_parser.py",
+    "tools/social_parser.py",
+    "tools/photo_analyzer.py",
+    "tools/skill_writer.py",
+    "tools/version_manager.py"
+  ],
+  "prompts": "prompts/",
+  "capabilities": [
+    "tool_exec",
+    "file_read",
+    "file_write"
+  ],
+  "localization": "zh-TW"
+}

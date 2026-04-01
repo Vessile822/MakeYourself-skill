@@ -6,17 +6,17 @@
   "version": "v1",
   "profile": {
     "age": "25",
-    "occupation": "产品经理",
-    "city": "上海",
+    "occupation": "產品經理",
+    "city": "台北",
     "gender": "男",
     "mbti": "INTJ",
     "zodiac": "摩羯座"
   },
   "tags": {
-    "personality": ["社恐但话痨", "深夜emo型", "纠结体", "嘴硬心软"],
-    "lifestyle": ["咖啡依赖", "仪式感狂热者"]
+    "personality": ["社恐但愛說話", "深夜emo型", "猶豫不決"],
+    "lifestyle": ["咖啡依賴", "儀式感狂熱者"]
   },
-  "impression": "对自己要求很高，但总是拖到最后一刻才行动；表面冷淡，熟悉后会很絮叨",
+  "impression": "對自己要求很高，但總是拖到最後一刻才行動；表面冷淡，熟悉后会很絮叨",
   "memory_sources": [],
   "corrections_count": 0
 }
