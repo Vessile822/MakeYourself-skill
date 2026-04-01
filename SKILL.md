@@ -6,7 +6,7 @@ version: "1.0.0"
 
 > **Language / 語言**: This skill supports both English and Chinese. Detect the user's language from their first message and respond in the same language throughout. Below are instructions in both languages — follow the one matching the user's language.
 >
-> 本 Skill 支持中英文。根據用戶第一條消息的語言，全程使用同一語言回復。下方提供了兩種語言的指令，按用戶語言選擇對應版本執行。
+> 本 Skill 支援中英文。根據使用者第一條訊息的語言，全程使用同一語言回覆。下方提供了兩種語言的指令，按使用者語言選擇對應版本執行。
 
 # MakeYourself — 自我蒸餾器（OpenClaw 版）
 
@@ -41,7 +41,7 @@ version: "1.0.0"
 | 列出已有 Skill | `exec` → `python tools/skill_writer.py --action list` |
 | 合併生成 SKILL.md | `exec` → `python tools/skill_writer.py --action combine` |
 
-**重要路徑規則**：
+**重要路徑規則：**
 - 本 Skill 的工具腳本位於：`~/.openclaw/workspace/skills/create-yourself/tools/`
 - 生成的自我 Skill 寫入：`~/.openclaw/workspace/skills/self-{slug}/`（這樣 OpenClaw 會自動識別為可用 Skill）
 - 在 Windows 上使用 `python` 而非 `python3`
@@ -51,19 +51,19 @@ version: "1.0.0"
 
 ## 主流程：創建新自我 Skill
 
-### Step 1：基礎信息錄入（3 個問題）
+### Step 1：基礎資訊輸入（3 個問題）
 
 參考 `prompts/intake.md` 的問題序列，只問 3 個問題：
 
 1. **代號/暱稱**（必填）
    - 示例：`小北` / `自己` / `20歲的我`
    - Slug 規則：中文自動轉拼音用 `-` 連接，英文直接小寫
-2. **基本信息**（一句話：年齡、職業、城市，想到什麼寫什麼）
+2. **基本資訊**（一句話：年齡、職業、城市，想到什麼寫什麼）
    - 示例：`25 歲，互聯網產品經理，上海`
 3. **自我畫像**（一句話：MBTI、星座、性格標籤、你對自己的印象）
-   - 示例：`INTJ 摩羯座 社恐但話嘮 深夜emo型選手`
+   - 示例：`INTJ 摩羯座 社恐但話嘮 週末 emo 型選手`
 
-除代號外均可跳過。收集完後彙總確認再進入下一步。
+除代號外均可跳過。收集完後匯總確認再進入下一步。
 
 ### Step 2：原材料導入
 
@@ -85,11 +85,11 @@ version: "1.0.0"
   [D] 上傳文件
       照片（會提取時間地點，構建人生時間線）、PDF、文本文件
 
-  [E] 直接粘貼/口述
+  [E] 直接貼上/口述
       把你對自己的認知告訴我
       比如：你的口頭禪、做決定的方式、生氣時的反應
 
-可以混用，也可以跳過（僅憑手動信息生成）。
+可以混用，也可以跳過（僅憑手動資訊生成）。
 ```
 
 ---
@@ -104,7 +104,7 @@ python tools/wechat_parser.py \
   --format auto
 ```
 
-支持的格式：WeChatMsg 導出（txt/html/csv）、留痕導出（JSON）、PyWxDump 導出（SQLite）、手動複製粘貼（純文本）。
+支持的格式：WeChatMsg 導出（txt/html/csv）、留痕導出（JSON）、PyWxDump 導出（SQLite）、手動複製貼上（純文本）。
 
 解析提取維度：
 - 「我」的高頻詞和口頭禪
@@ -151,9 +151,9 @@ python tools/photo_analyzer.py \
 
 ---
 
-#### 方式 E：直接粘貼/口述
+#### 方式 E：直接貼上/口述
 
-用戶粘貼或口述的內容直接作為文本原材料。引導用戶回憶：
+使用者貼上或口述的內容直接作為文本素材。引導使用者回憶：
 
 ```
 可以聊聊這些（想到什麼說什麼）：
@@ -170,7 +170,7 @@ python tools/photo_analyzer.py \
 
 ---
 
-如果用戶說「沒有文件」或「跳過」，僅憑 Step 1 的手動信息生成 Skill。
+如果使用者說「沒有文件」或「跳過」，僅憑 Step 1 的手動資訊生成 Skill。
 
 ### Step 3：分析原材料
 

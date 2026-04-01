@@ -1,12 +1,12 @@
 # MakeYourself Skill （OpenClaw 版）
 
-> 與其蒸餾別人，不如蒸餾自己。歡迎加入數字生命！
+> 與其蒸餾別人，不如蒸餾自己。歡迎加入數位生命！
 
 提供你的聊天記錄、日記、照片，加上你對自己的描述，我們將你解構為一套可運行的結構：
 - **Part A — Self Memory（自我記憶）**
 - **Part B — Persona（人格模型）**
 
-生成一個能用你口頭禪思考、用你邏輯回話的數字副本 `SKILL.md`。
+生成一個能用你口頭禪思考、用你邏輯回話的數位副本 `SKILL.md`。
 
 Inspired by [colleague-skill](https://github.com/notdog1998/colleague-skill) and [yourself-skill](https://github.com/notdog1998/yourself-skill).
 
@@ -44,9 +44,9 @@ pip install -r requirements.txt
 - "Help me create a skill of myself"
 - "I want to distill myself into a skill"
 
-按提示輸入你的代號、基本信息、自我畫像，然後選擇資料來源。所有欄位均可跳過，僅憑描述也能生成。
+按提示輸入你的代號、基本資訊、自我畫像，然後選擇資料來源。所有欄位均可跳過，僅憑描述也能生成。
 
-完成後，agent 會在 `~/.openclaw/workspace/skills/self-{slug}/` 生成一個獨立的 `SKILL.md`。OpenClaw 會自動讀取這個新 Skill，你的數字副本就上線了。
+完成後，agent 會在 `~/.openclaw/workspace/skills/self-{slug}/` 生成一個獨立的 `SKILL.md`。OpenClaw 會自動讀取這個新 Skill，你的數位副本就上線了。
 
 ## 管理命令
 
@@ -75,13 +75,13 @@ pip install -r requirements.txt
                真想改的話，先把任務拆到能騙過大腦的程度。
 ```
 
-## 項目結構
+## 專案結構
 
 ```
 create-yourself/
 ├── SKILL.md                 # Skill 入口（OpenClaw 格式）
 ├── prompts/                 # Prompt 模板
-│   ├── intake.md            # 對話式信息錄入
+│   ├── intake.md            # 對話式資訊輸入
 │   ├── self_analyzer.md     # 自我記憶/認知提取
 │   ├── persona_analyzer.md  # 性格行為提取（含標籤翻譯表）
 │   ├── self_builder.md      # self.md 生成模板
