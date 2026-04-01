@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""微信聊天记录解析器
+"""微信聊天記錄解析器
 
-支持主流导出工具的格式：
-- WeChatMsg 导出（txt/html/csv）
-- 留痕导出（json）
-- PyWxDump 导出（sqlite）
-- 手动复制粘贴（纯文本）
+支援主流匯出工具的格式：
+- WeChatMsg 匯出（txt/html/csv）
+- 留痕匯出（json）
+- PyWxDump 匯出（sqlite）
+- 手動複製貼上（純文字）
 
 Usage:
-    python3 wechat_parser.py --file <path> --target <name> --output <output_path> [--format auto]
+    python wechat_parser.py --file <path> --target <name> --output <output_path> [--format auto]
 """
 
 import argparse
@@ -22,11 +22,11 @@ from pathlib import Path
 
 
 def detect_format(file_path: str) -> str:
-    """自动检测文件格式"""
+    """自動偵測檔案格式"""
     ext = Path(file_path).suffix.lower()
 
     if ext == '.json':
-        return 'liuhen'  # 留痕导出
+        return 'liuhen'  # 留痕匯出
     elif ext == '.csv':
         return 'wechatmsg_csv'
     elif ext == '.html' or ext == '.htm':
@@ -34,10 +34,10 @@ def detect_format(file_path: str) -> str:
     elif ext == '.db' or ext == '.sqlite':
         return 'pywxdump'
     elif ext == '.txt':
-        # 尝试区分 WeChatMsg txt 和纯文本
+        # 嘗試區分 WeChatMsg txt 和純文字
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
             first_lines = f.read(2000)
-        # WeChatMsg 格式通常有时间戳模式
+        # WeChatMsg 格式通常有時間戳模式
         if re.search(r'\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}', first_lines):
             return 'wechatmsg_txt'
         return 'plaintext'
@@ -46,19 +46,19 @@ def detect_format(file_path: str) -> str:
 
 
 def parse_wechatmsg_txt(file_path: str, target_name: str) -> dict:
-    """解析 WeChatMsg 导出的 txt 格式
+    """解析 WeChatMsg 匯出的 txt 格式
 
     典型格式：
-    2024-01-15 20:30:45 张三
+    2024-01-15 20:30:45 張三
     今天好累啊
 
     2024-01-15 20:31:02 我
-    怎么了？
+    怎麼了？
     """
     messages = []
     current_msg = None
 
-    # WeChatMsg 时间戳 + 发送者模式
+    # WeChatMsg 時間戳 + 傳送者模式
     msg_pattern = re.compile(r'^(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2})\s+(.+)$')
 
     with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
@@ -86,12 +86,12 @@ def parse_wechatmsg_txt(file_path: str, target_name: str) -> dict:
 
 
 def parse_liuhen_json(file_path: str, target_name: str) -> dict:
-    """解析留痕导出的 JSON 格式"""
+    """解析留痕匯出的 JSON 格式"""
     with open(file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
 
     messages = []
-    # 留痕格式可能有多种结构，尝试常见的
+    # 留痕格式可能有多種結構，嘗試常見的
     msg_list = data if isinstance(data, list) else data.get('messages', data.get('data', []))
 
     for msg in msg_list:
@@ -105,7 +105,7 @@ def parse_liuhen_json(file_path: str, target_name: str) -> dict:
 
 
 def parse_plaintext(file_path: str, target_name: str) -> dict:
-    """解析纯文本粘贴的聊天记录"""
+    """解析純文字貼上的聊天記錄"""
     with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
         content = f.read()
 
@@ -115,21 +115,21 @@ def parse_plaintext(file_path: str, target_name: str) -> dict:
         'format': 'plaintext',
         'message_count': 0,
         'analysis': {
-            'note': '纯文本格式，需要人工辅助分析'
+            'note': '純文字格式，需要人工輔助分析'
         }
     }
 
 
 def analyze_messages(messages: list, target_name: str) -> dict:
-    """分析消息列表，提取关键特征"""
+    """分析訊息列表，提取關鍵特徵"""
     target_msgs = [m for m in messages if target_name in m.get('sender', '')]
     other_msgs = [m for m in messages if target_name not in m.get('sender', '')]
 
-    # 提取口头禅（高频词分析）
+    # 提取口頭禪（高頻詞分析）
     all_target_text = ' '.join([m['content'] for m in target_msgs if m.get('content')])
 
-    # 提取语气词
-    particles = re.findall(r'[哈嗯哦噢嘿唉呜啊呀吧嘛呢吗么]+', all_target_text)
+    # 提取語氣詞
+    particles = re.findall(r'[哈嗯哦噢嘿唉嗚啊呀吧嘛呢嗎麼]+', all_target_text)
     particle_freq = {}
     for p in particles:
         particle_freq[p] = particle_freq.get(p, 0) + 1
@@ -148,17 +148,17 @@ def analyze_messages(messages: list, target_name: str) -> dict:
         emoji_freq[e] = emoji_freq.get(e, 0) + 1
     top_emojis = sorted(emoji_freq.items(), key=lambda x: -x[1])[:10]
 
-    # 消息长度统计
+    # 訊息長度統計
     msg_lengths = [len(m['content']) for m in target_msgs if m.get('content')]
     avg_length = sum(msg_lengths) / len(msg_lengths) if msg_lengths else 0
 
-    # 标点习惯
+    # 標點習慣
     punctuation_counts = {
-        '句号': all_target_text.count('。'),
-        '感叹号': all_target_text.count('！') + all_target_text.count('!'),
-        '问号': all_target_text.count('？') + all_target_text.count('?'),
-        '省略号': all_target_text.count('...') + all_target_text.count('…'),
-        '波浪号': all_target_text.count('～') + all_target_text.count('~'),
+        '句號': all_target_text.count('。'),
+        '驚嘆號': all_target_text.count('！') + all_target_text.count('!'),
+        '問號': all_target_text.count('？') + all_target_text.count('?'),
+        '刪節號': all_target_text.count('...') + all_target_text.count('…'),
+        '波浪號': all_target_text.count('～') + all_target_text.count('~'),
     }
 
     return {
@@ -178,22 +178,22 @@ def analyze_messages(messages: list, target_name: str) -> dict:
 
 
 def main():
-    parser = argparse.ArgumentParser(description='微信聊天记录解析器')
-    parser.add_argument('--file', required=True, help='输入文件路径')
-    parser.add_argument('--target', required=True, help='目标对象的名字/昵称（如"我"）')
-    parser.add_argument('--output', required=True, help='输出文件路径')
-    parser.add_argument('--format', default='auto', help='文件格式 (auto/wechatmsg_txt/liuhen/pywxdump/plaintext)')
+    parser = argparse.ArgumentParser(description='微信聊天記錄解析器')
+    parser.add_argument('--file', required=True, help='輸入檔案路徑')
+    parser.add_argument('--target', required=True, help='目標對象的名字/暱稱（如「我」）')
+    parser.add_argument('--output', required=True, help='輸出檔案路徑')
+    parser.add_argument('--format', default='auto', help='檔案格式 (auto/wechatmsg_txt/liuhen/pywxdump/plaintext)')
 
     args = parser.parse_args()
 
     if not os.path.exists(args.file):
-        print(f"错误：文件不存在 {args.file}", file=sys.stderr)
+        print(f"錯誤：檔案不存在 {args.file}", file=sys.stderr)
         sys.exit(1)
 
     fmt = args.format
     if fmt == 'auto':
         fmt = detect_format(args.file)
-        print(f"自动检测格式：{fmt}")
+        print(f"自動偵測格式：{fmt}")
 
     parsers = {
         'wechatmsg_txt': parse_wechatmsg_txt,
@@ -204,46 +204,46 @@ def main():
     parse_func = parsers.get(fmt, parse_plaintext)
     result = parse_func(args.file, args.target)
 
-    # 输出分析结果
+    # 輸出分析結果
     os.makedirs(os.path.dirname(args.output) or '.', exist_ok=True)
 
     with open(args.output, 'w', encoding='utf-8') as f:
-        f.write(f"# 微信聊天记录分析 — {args.target}\n\n")
-        f.write(f"来源文件：{args.file}\n")
-        f.write(f"检测格式：{fmt}\n")
-        f.write(f"总消息数：{result.get('total_messages', 'N/A')}\n")
-        f.write(f"目标消息数：{result.get('target_messages', 'N/A')}\n\n")
+        f.write(f"# 微信聊天記錄分析 — {args.target}\n\n")
+        f.write(f"來源檔案：{args.file}\n")
+        f.write(f"偵測格式：{fmt}\n")
+        f.write(f"總訊息數：{result.get('total_messages', 'N/A')}\n")
+        f.write(f"目標訊息數：{result.get('target_messages', 'N/A')}\n\n")
 
         analysis = result.get('analysis', {})
 
         if analysis.get('top_particles'):
-            f.write("## 高频语气词\n")
+            f.write("## 高頻語氣詞\n")
             for word, count in analysis['top_particles']:
                 f.write(f"- {word}: {count}次\n")
             f.write("\n")
 
         if analysis.get('top_emojis'):
-            f.write("## 高频 Emoji\n")
+            f.write("## 高頻 Emoji\n")
             for emoji, count in analysis['top_emojis']:
                 f.write(f"- {emoji}: {count}次\n")
             f.write("\n")
 
         if analysis.get('punctuation_habits'):
-            f.write("## 标点习惯\n")
+            f.write("## 標點習慣\n")
             for punct, count in analysis['punctuation_habits'].items():
                 f.write(f"- {punct}: {count}次\n")
             f.write("\n")
 
-        f.write(f"## 消息风格\n")
-        f.write(f"- 平均消息长度：{analysis.get('avg_message_length', 'N/A')} 字\n")
-        f.write(f"- 风格：{'短句连发型' if analysis.get('message_style') == 'short_burst' else '长段落型'}\n\n")
+        f.write(f"## 訊息風格\n")
+        f.write(f"- 平均訊息長度：{analysis.get('avg_message_length', 'N/A')} 字\n")
+        f.write(f"- 風格：{'短句連發型' if analysis.get('message_style') == 'short_burst' else '長段落型'}\n\n")
 
         if result.get('sample_messages'):
-            f.write("## 消息样本（前50条）\n")
+            f.write("## 訊息樣本（前50則）\n")
             for i, msg in enumerate(result['sample_messages'], 1):
                 f.write(f"{i}. {msg}\n")
 
-    print(f"分析完成，结果已写入 {args.output}")
+    print(f"分析完成，結果已寫入 {args.output}")
 
 
 if __name__ == '__main__':

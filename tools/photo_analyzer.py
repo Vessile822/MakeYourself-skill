@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""照片元信息分析器
+"""照片元資訊分析器
 
-提取照片 EXIF 信息（拍摄时间、地点），构建个人时间线和常去地点。
+提取照片 EXIF 資訊（拍攝時間、地點），建構個人時間線和常去地點。
 
 Usage:
-    python3 photo_analyzer.py --dir <photo_dir> --output <output_path>
+    python photo_analyzer.py --dir <photo_dir> --output <output_path>
 """
 
 import argparse
@@ -23,9 +23,9 @@ except ImportError:
 
 
 def get_exif_data(image_path: str) -> dict:
-    """提取单张图片的 EXIF 信息"""
+    """提取單張圖片的 EXIF 資訊"""
     if not HAS_PIL:
-        return {'error': 'Pillow 未安装，无法读取 EXIF'}
+        return {'error': 'Pillow 未安裝，無法讀取 EXIF'}
 
     try:
         img = Image.open(image_path)
@@ -43,12 +43,12 @@ def get_exif_data(image_path: str) -> dict:
             'path': image_path,
         }
 
-        # 拍摄时间
+        # 拍攝時間
         date_taken = exif.get('DateTimeOriginal') or exif.get('DateTime')
         if date_taken:
             result['date_taken'] = str(date_taken)
 
-        # GPS 信息
+        # GPS 資訊
         gps_info = exif.get('GPSInfo')
         if gps_info:
             gps_data = {}
@@ -71,20 +71,20 @@ def get_exif_data(image_path: str) -> dict:
 
 
 def _convert_to_degrees(value):
-    """将 GPS 坐标转换为十进制度"""
+    """將 GPS 座標轉換為十進位度"""
     d, m, s = value
     return float(d) + float(m) / 60 + float(s) / 3600
 
 
 def main():
-    parser = argparse.ArgumentParser(description='照片元信息分析器')
-    parser.add_argument('--dir', required=True, help='照片目录')
-    parser.add_argument('--output', required=True, help='输出文件路径')
+    parser = argparse.ArgumentParser(description='照片元資訊分析器')
+    parser.add_argument('--dir', required=True, help='照片目錄')
+    parser.add_argument('--output', required=True, help='輸出檔案路徑')
 
     args = parser.parse_args()
 
     if not os.path.isdir(args.dir):
-        print(f"错误：目录不存在 {args.dir}", file=sys.stderr)
+        print(f"錯誤：目錄不存在 {args.dir}", file=sys.stderr)
         sys.exit(1)
 
     image_exts = {'.jpg', '.jpeg', '.png', '.heic', '.heif'}
@@ -97,21 +97,21 @@ def main():
                 exif = get_exif_data(fpath)
                 photos.append(exif)
 
-    # 按时间排序
+    # 按時間排序
     dated_photos = [p for p in photos if p.get('date_taken')]
     dated_photos.sort(key=lambda x: x['date_taken'])
     undated_photos = [p for p in photos if not p.get('date_taken')]
 
     os.makedirs(os.path.dirname(args.output) or '.', exist_ok=True)
     with open(args.output, 'w', encoding='utf-8') as f:
-        f.write(f"# 照片时间线分析\n\n")
-        f.write(f"扫描目录：{args.dir}\n")
-        f.write(f"总照片数：{len(photos)}\n")
-        f.write(f"有时间信息：{len(dated_photos)}\n")
-        f.write(f"有位置信息：{len([p for p in photos if p.get('gps')])}\n\n")
+        f.write(f"# 照片時間線分析\n\n")
+        f.write(f"掃描目錄：{args.dir}\n")
+        f.write(f"總照片數：{len(photos)}\n")
+        f.write(f"有時間資訊：{len(dated_photos)}\n")
+        f.write(f"有位置資訊：{len([p for p in photos if p.get('gps')])}\n\n")
 
         if dated_photos:
-            f.write("## 时间线\n\n")
+            f.write("## 時間線\n\n")
             for p in dated_photos:
                 line = f"- **{p['date_taken'][:10]}** — {p['file']}"
                 if p.get('gps'):
@@ -120,14 +120,14 @@ def main():
             f.write("\n")
 
         if undated_photos:
-            f.write(f"## 无时间信息的照片（{len(undated_photos)} 张）\n\n")
+            f.write(f"## 無時間資訊的照片（{len(undated_photos)} 張）\n\n")
             for p in undated_photos:
                 f.write(f"- {p.get('file', p.get('path', 'unknown'))}\n")
 
         if not HAS_PIL:
-            f.write("\n⚠️ Pillow 未安装，仅列出文件。安装方法：pip3 install Pillow\n")
+            f.write("\n⚠️ Pillow 未安裝，僅列出檔案。安裝方式：pip install Pillow\n")
 
-    print(f"分析完成，结果已写入 {args.output}")
+    print(f"分析完成，結果已寫入 {args.output}")
 
 
 if __name__ == '__main__':

@@ -1,11 +1,11 @@
-# 生成的自我 Skills（用户数据，不上传）
+# 產生的自我 Skills（使用者資料，不上傳）
 selves/
 !selves/example_me/
 
-# 参考仓库（外部 git 仓库，不提交）
+# 參考倉庫（外部 git 倉庫，不提交）
 references/
 
-# Claude 本地配置
+# Claude 本地設定
 .claude/
 
 # Python
@@ -34,7 +34,7 @@ wheels/
 .installed.cfg
 *.egg
 
-# IDE
+# 開發工具
 .idea/
 .vscode/
 *.swp
@@ -42,7 +42,7 @@ wheels/
 *~
 .DS_Store
 
-# 临时文件
+# 暫存檔案
 *.log
 /tmp/
 *.tmp
