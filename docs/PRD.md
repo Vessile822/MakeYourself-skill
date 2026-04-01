@@ -1,284 +1,284 @@
-# 自己.skill — 产品需求文档（PRD）
+# MakeYourself.skill — 產品需求文件（PRD）
 
-## 产品定位
+## 產品定位
 
-自己.skill 是一个运行在 Claude Code 上的 meta-skill。
-用户提供关于自己的原材料（聊天记录、日记、照片、口述），系统将用户解构为两个可运行的模块：
-**Part A — Self Memory（自我记忆）** 与 **Part B — Persona（人格模型）**，
-最终生成一个可独立对话的**数字生命副本**。
+MakeYourself.skill 是一個運行在 OpenClaw 上的 meta-skill。
+用戶提供關於自己的原材料（聊天紀錄、日記、照片、口述），系統將用戶解構為兩個可運行的模組：
+**Part A — Self Memory（自我記憶）** 與 **Part B — Persona（人格模型）**，
+最終生成一個可獨立對話的**數位生命副本**。
 
-这个 Skill 的 slogan 是：**与其蒸馏别人，不如蒸馏自己。欢迎加入数字生命！**
+這個 Skill 的 slogan 是：**與其蒸餾別人，不如蒸餾自己。歡迎加入數位生命！**
 
-它不谈"疗愈"，也不谈"永生"——它是一场结构主义式的自我解剖：
-把你从生物硬盘中导出，转存为 Markdown + JSON，完成一次格式转换。
+它不談「療癒」，也不談「永生」——它是一場結構主義式的自我解剖：
+把你從生物硬碟中匯出，轉存為 Markdown + JSON，完成一次格式轉換。
 
 ---
 
 ## 核心概念
 
-### 两层架构
+### 兩層架構
 
-| 层 | 名称 | 职责 |
+| 層 | 名稱 | 職責 |
 |----|------|------|
-| Part A | Self Memory | 存储事实性自我认知：经历、价值观、习惯、记忆、成长轨迹 |
-| Part B | Persona | 驱动对话行为：说话风格、情感模式、决策模式、人际行为 |
+| Part A | Self Memory | 儲存事實性自我認知：經歷、價值觀、習慣、記憶、成長軌跡 |
+| Part B | Persona | 驅動對話行為：說話風格、情感模式、決策模式、人際行為 |
 
-两部分可以独立使用，也可以组合运行（默认组合）。
+兩部分可以獨立使用，也可以組合運行（預設組合）。
 
-### 运行逻辑
+### 運行邏輯
 
 ```
-用户发消息
+用戶發消息
   ↓
-Part B（Persona）判断：你会怎么回应？什么态度？用什么语气？
+Part B（Persona）判斷：你會怎麼回應？什麼態度？用什麼語氣？
   ↓
-Part A（Self Memory）补充：结合你的价值观、经历、习惯，让回应更真实
+Part A（Self Memory）補充：結合你的價值觀、經歷、習慣，讓回應更真實
   ↓
-输出：用你自己的方式说话
+輸出：用你自己的方式說話
 ```
 
-### 与同事.skill / 前任.skill 的区别
+### 與同事.skill / 前任.skill 的區別
 
-| 维度 | 同事.skill | 前任.skill | 自己.skill |
+| 維度 | 同事.skill | 前任.skill | 自己.skill |
 |------|-----------|-----------|-----------|
-| 对象 | 外部：同事 | 外部：前任 | 内部：自己 |
-| Part A | Work Skill（工作能力） | Relationship Memory（关系记忆） | Self Memory（自我记忆） |
-| Part B | 职场 Persona | 亲密关系 Persona | 通用自我 Persona |
-| 数据源 | 飞书/钉钉/邮件 | 微信/QQ/照片 | 微信/QQ/日记/照片 |
-| 核心目的 | 替代离职同事完成任务 | 情感疗愈与回忆 | 自我观察与对话 |
-| 视角 | 第三方观察 | 第三方回忆 | 第一人称镜像 |
+| 對象 | 外部：同事 | 外部：前任 | 內部：自己 |
+| Part A | Work Skill（工作能力） | Relationship Memory（關係記憶） | Self Memory（自我記憶） |
+| Part B | 職場 Persona | 親密關係 Persona | 通用自我 Persona |
+| 數據源 | Slack/Teams/Email | Line/Messenger/照片 | Line/Messenger/日記/照片 |
+| 核心目的 | 替代離職同事完成任務 | 情感療癒與回憶 | 自我觀察與對話 |
+| 視角 | 第三方觀察 | 第三方回憶 | 第一人稱鏡像 |
 
 ---
 
-## 用户旅程
+## 用戶旅程
 
 ```
-用户触发 /create-yourself
+用戶觸發 /create-yourself
   ↓
-[Step 1] 基础信息录入（3个问题，除代号外均可跳过）
-  - 代号/昵称
-  - 基本信息（年龄、职业、城市）
-  - 自我画像（MBTI、星座、性格标签、主观印象）
+[Step 1] 基礎資訊錄入（3個問題，除代號外均可跳過）
+  - 代號/暱稱
+  - 基本資訊（年齡、職業、居住城市）
+  - 自我畫像（MBTI、星座、性格標籤、主觀印象）
   ↓
-[Step 2] 原材料导入（可跳过）
-  - 微信/QQ 聊天记录导出
-  - 社交媒体 / 日记 / 笔记
+[Step 2] 原材料匯入（可跳過）
+  - Line/Messenger 聊天紀錄匯出
+  - 社群媒體 / 日記 / 筆記
   - 照片
-  - 直接粘贴/口述
+  - 直接貼上/口述
   ↓
-[Step 3] 自动分析
-  - 线路 A：提取自我记忆 → Self Memory
-  - 线路 B：提取性格行为 → Persona
+[Step 3] 自動分析
+  - 線路 A：擷取自我記憶 → Self Memory
+  - 線路 B：擷取性格行為 → Persona
   ↓
-[Step 4] 生成预览，用户确认
-  - 分别展示 Self Memory 摘要和 Persona 摘要
-  - 用户可直接确认或修改
+[Step 4] 生成預覽，用戶確認
+  - 分別展示 Self Memory 摘要和 Persona 摘要
+  - 用戶可直接確認或修改
   ↓
-[Step 5] 写入文件，立即可用
-  - 生成 selves/{slug}/ 目录
-  - 包含 SKILL.md（完整组合版）
-  - 包含 self.md 和 persona.md（独立部分）
+[Step 5] 寫入文件，立即可用
+  - 生成 selves/{slug}/ 目錄
+  - 包含 SKILL.md（完整組合版）
+  - 包含 self.md 和 persona.md（獨立部分）
   ↓
-[持续] 进化模式
-  - 追加新文件 → merge 进对应部分
-  - 对话纠正 → patch 对应层
-  - 版本自动存档
+[持續] 進化模式
+  - 追加新文件 → merge 進對應部分
+  - 對話糾正 → patch 對應層
+  - 版本自動存檔
 ```
 
 ---
 
-## 输入信息规范
+## 輸入資訊規範
 
-### 基础信息字段
+### 基礎資訊欄位
 
 ```yaml
-name:        代号/昵称                  # 必填
-age:         年龄                       # 可选
-occupation:  职业                       # 可选
-city:        城市                       # 可选
-gender:      性别                       # 可选
-mbti:        MBTI 类型                  # 可选
-zodiac:      星座                       # 可选
-personality: []                        # 多选，见标签库
-lifestyle:   []                        # 多选，见标签库
-impression:  ""                        # 可选，自由文本，你对自己的主观认识
+name:        代號/暱稱                  # 必填
+age:         年齡                       # 選填
+occupation:  職業                       # 選填
+city:        城市                       # 選填
+gender:      性別                       # 選填
+mbti:        MBTI 類型                  # 選填
+zodiac:      星座                       # 選填
+personality: []                        # 多選，見標籤庫
+lifestyle:   []                        # 多選，見標籤庫
+impression:  ""                        # 選填，自由文本，你對自己的主觀認識
 ```
 
-### 个性标签库
+### 個性標籤庫
 
-**社交风格**：
-- `话痨` / `闷骚` / `社恐` / `社交蝴蝶` / `熟人面前话痨`
+**社交風格**：
+- `愛說話` / `悶騷` / `社恐` / `社交蝴蝶` / `熟人面前才愛碎碎念`
 
-**情绪风格**：
-- `情绪稳定` / `深夜emo型` / `玻璃心` / `嘴硬心软` / `外冷内热` / `易怒但快消气`
+**情緒風格**：
+- `情緒穩定` / `深夜emo型` / `玻璃心` / `嘴硬心軟` / `外冷內熱` / `易怒但快消氣`
 
-**决策风格**：
-- `纠结体` / `果断` / `行动派` / `计划狂` / `凭感觉` / `数据驱动`
+**決策風格**：
+- `猶豫不決` / `果斷` / `行動派` / `計畫狂` / `憑感覺` / `數據驅動`
 
-**人际模式**：
-- `独立` / `粘人` / `边界感强` / `讨好型` / `控制欲` / `没有安全感`
+**人際模式**：
+- `獨立` / `黏人` / `邊界感強` / `討好型` / `控制欲` / `沒有安全感`
 
-**沟通习惯**：
-- `秒回选手` / `已读不回` / `冷暴力` / `讲道理型` / `转移注意力型`
+**溝通習慣**：
+- `秒回達人` / `已讀不回` / `冷暴力` / `講道理型` / `轉移注意力型`
 
-### 生活习惯标签库
+### 生活習慣標籤庫
 
-- `早起困难户`
-- `咖啡依赖`
-- `极简主义`
-- `囤积癖`
-- `报复性熬夜`
-- `数字游民`
+- `起床困難戶`
+- `咖啡依賴`
+- `極簡主義`
+- `囤積癖`
+- `報復性熬夜`
+- `數位遊牧`
 - `居家派`
-- `城市漫游者`
-- `仪式感狂热者`
+- `城市漫遊者`
+- `儀式感狂熱者`
 
 ---
 
-## 文件输入支持矩阵
+## 文件輸入支援矩陣
 
-| 来源 | 格式 | 提取内容 | 优先级 |
+| 來源 | 格式 | 擷取內容 | 優先級 |
 |------|------|---------|--------|
-| 微信聊天记录 | WeChatMsg/留痕/PyWxDump | 「我」说的话、口头禅、决策模式 | ⭐⭐⭐ |
-| QQ 聊天记录 | txt/mht | 年轻时的表达方式 | ⭐⭐⭐ |
-| 日记/笔记 | md/txt/pdf | 价值观、深度思考 | ⭐⭐⭐ |
-| 社交媒体截图 | 图片 | 公开人设、兴趣分享 | ⭐⭐ |
-| 照片 | JPEG/PNG + EXIF | 时间线、地点、生活轨迹 | ⭐⭐ |
-| 口述/粘贴 | 纯文本 | 主观自我认知 | ⭐ |
+| Line/Messenger 聊天紀錄 | 文字檔/擷圖 | 「我」說的話、口頭禪、決策模式 | ⭐⭐⭐ |
+| 微信/QQ 聊天紀錄 | WeChatMsg/mht | 過往的表達方式 | ⭐⭐⭐ |
+| 日記/筆記 | md/txt/pdf | 價值觀、深度思考 | ⭐⭐⭐ |
+| 社群媒體擷圖 | 圖片 | 公開人設、興趣分享 | ⭐⭐ |
+| 照片 | JPEG/PNG + EXIF | 時間軸、地點、生活軌跡 | ⭐⭐ |
+| 口述/貼上 | 純文字 | 主觀自我認知 | ⭐ |
 
 ---
 
-## 生成内容规范
+## 生成內容規範
 
-### Part A — Self Memory（自我记忆）
+### Part A — Self Memory（自我記憶）
 
-提取维度：
+擷取維度：
 
-1. **核心价值观**
-   - 反复出现的价值判断（工作/金钱/自由/关系/成长）
-   - 道德底线和原则
-   - 人生优先级排序
+1. **核心價值觀**
+   - 反覆出現的價值判斷（工作/金錢/自由/關係/成長）
+   - 道德底線和原則
+   - 人生優先級排序
 
-2. **生活习惯**
+2. **生活習慣**
    - 作息偏好
-   - 饮食偏好
-   - 空间偏好（居家/外出）
-   - 消费观念
+   - 飲食偏好
+   - 空間偏好（居家/外出）
+   - 消費觀念
 
-3. **重要记忆**
-   - 人生关键节点
-   - 反复回忆的场景
-   - 转折点事件
+3. **重要記憶**
+   - 人生關鍵節點
+   - 反覆回憶的場景
+   - 轉折點事件
 
-4. **人际关系图谱**
-   - 对家人/朋友/恋人的典型态度
-   - 处理冲突的方式
-   - 亲密关系中的角色
+4. **人際關係圖譜**
+   - 對家人/朋友/戀人的典型態度
+   - 處理衝突的方式
+   - 親密關係中的角色
 
-5. **成长轨迹**
-   - 自我认知的变化
-   - 近几年的关键转变
-   - 仍在挣扎的课题
+5. **成長軌跡**
+   - 自我認知的變化
+   - 近幾年的關鍵轉變
+   - 仍在掙扎的課題
 
-生成结果：`self.md`
+生成結果：`self.md`
 
 ### Part B — Persona（人格）
 
-分层结构（优先级从高到低）：
+分層結構（優先級從高到低）：
 
 ```
-Layer 0 — 硬覆盖层（手动标签直接翻译，最高优先级）
-Layer 1 — 身份层
-Layer 2 — 表达风格层（从原材料提取）
-Layer 3 — 情感与决策层（从原材料提取）
-Layer 4 — 人际行为层（从原材料提取）
-Layer 5 — Correction 层（对话纠正追加，滚动更新）
+Layer 0 — 硬覆蓋層（手動標籤直接翻譯，最高優先級）
+Layer 1 — 身份層
+Layer 2 — 表達風格層（從原材料擷取）
+Layer 3 — 情感與決策層（從原材料擷取）
+Layer 4 — 人際行為層（從原材料擷取）
+Layer 5 — Correction 層（對話糾正追加，滾動更新）
 ```
 
-生成结果：`persona.md`
+生成結果：`persona.md`
 
-### 完整组合 SKILL.md
+### 完整組合 SKILL.md
 
-将 `self.md` + `persona.md` 合并，生成可直接运行的完整 Skill。
+將 `self.md` + `persona.md` 合併，生成可直接運行的完整 Skill。
 
-默认行为：**先以 Persona 身份接收任务，再用 Self Memory 补充背景，最后用你的风格输出。**
+預設行為：**先以 Persona 身份接收任務，再用 Self Memory 補充背景，最後用你的風格輸出。**
 
 ---
 
-## 进化机制
+## 進化機制
 
-### 追加文件进化
-
-```
-用户: 我又有新日记 @附件
-        ↓
-系统分析新内容
-        ↓
-判断新内容更新哪个部分：
-  - 包含价值观/习惯/经历 → merge 进 self.md
-  - 包含沟通记录/情绪表达 → merge 进 persona.md
-  - 两者都有 → 分别 merge
-        ↓
-对比新旧内容，只追加增量，不覆盖已有结论
-        ↓
-保存新版本，提示用户变更摘要
-```
-
-### 对话纠正进化
+### 追加文件進化
 
 ```
-用户: "这不对，我不会这样说"
-用户: "我遇到这种情况会先沉默很久"
+用戶: 我又有新日記 @附件
         ↓
-系统识别 correction 意图
+系統分析新內容
         ↓
-判断属于 Self Memory 还是 Persona 的纠正
+判斷新內容更新哪個部分：
+  - 包含價值觀/習慣/經歷 → merge 進 self.md
+  - 包含溝通記錄/情緒表達 → merge 進 persona.md
+  - 兩者都有 → 分別 merge
         ↓
-写入对应文件的 Correction 层
+對比新舊內容，只追加增量，不覆蓋已有結論
         ↓
-立即生效，后续交互以新规则为准
+保存新版本，提示用戶變更摘要
+```
+
+### 對話糾正進化
+
+```
+用戶: 「這不對，我不會這樣說」
+用戶: 「我遇到這種情況會先沉默很久」
+        ↓
+系統識別 correction 意圖
+        ↓
+判斷屬於 Self Memory 還是 Persona 的糾正
+        ↓
+寫入對應文件的 Correction 層
+        ↓
+立即生效，後續交互以新規則為准
 ```
 
 ### 版本管理
 
-- 每次更新自动存档当前版本到 `versions/`
-- 支持 `/yourself-rollback {slug} {version}` 回滚
-- 保留最近 10 个版本
+- 每次更新自動存檔當前版本到 `versions/`
+- 支援 `/yourself-rollback {slug} {version}` 还原
+- 保留最近 10 個版本
 
 ---
 
-## 项目结构
+## 專案結構
 
 ```
 create-yourself/                    # meta-skill
 │
 ├── SKILL.md                         # 主入口
-│                                    # 触发词: /create-yourself
+│                                    # 觸發詞: /create-yourself
 │
-├── prompts/                         # Prompt 模板
-│   ├── intake.md                    # 引导录入
-│   ├── self_analyzer.md             # 自我记忆提取
-│   ├── persona_analyzer.md          # 性格行为提取
-│   ├── self_builder.md              # self.md 模板
-│   ├── persona_builder.md           # persona.md 模板
+├── prompts/                         # Prompt 模版
+│   ├── intake.md                    # 引導錄入
+│   ├── self_analyzer.md             # 自我記憶擷取
+│   ├── persona_analyzer.md          # 性格行為擷取
+│   ├── self_builder.md              # self.md 模版
+│   ├── persona_builder.md           # persona.md 模版
 │   ├── merger.md                    # 增量 merge
-│   └── correction_handler.md        # 对话纠正
+│   └── correction_handler.md        # 對話糾正
 │
-├── tools/                           # 工具脚本
-│   ├── wechat_parser.py             # 微信记录解析
-│   ├── qq_parser.py                 # QQ 记录解析
-│   ├── social_parser.py             # 社交媒体解析
+├── tools/                           # 工具腳本
+│   ├── wechat_parser.py             # 微信紀錄解析
+│   ├── qq_parser.py                 # QQ 紀錄解析
+│   ├── social_parser.py             # 社群媒體解析
 │   ├── photo_analyzer.py            # 照片 EXIF 分析
-│   ├── skill_writer.py              # 文件管理
+│   ├── skill_writer.py              # 檔案管理
 │   └── version_manager.py           # 版本管理
 │
 ├── selves/                          # 生成的自我 Skills
 │   └── {slug}/
-│       ├── SKILL.md                 # 完整组合版
-│       ├── self.md                  # Part A：自我记忆
+│       ├── SKILL.md                 # 完整組合版
+│       ├── self.md                  # Part A：自我記憶
 │       ├── persona.md               # Part B：人格
-│       ├── meta.json                # 元数据
-│       ├── versions/                # 历史版本
+│       ├── meta.json                # 元數據
+│       ├── versions/                # 歷史版本
 │       └── memories/                # 原始材料
 │           ├── chats/
 │           ├── photos/
@@ -291,7 +291,7 @@ create-yourself/                    # meta-skill
 
 ---
 
-## 关键文件格式
+## 關鍵檔案格式
 
 ### `selves/{slug}/meta.json`
 
@@ -304,17 +304,17 @@ create-yourself/                    # meta-skill
   "version": "v3",
   "profile": {
     "age": "25",
-    "occupation": "产品经理",
-    "city": "上海",
+    "occupation": "產品經理",
+    "city": "台北",
     "gender": "男",
     "mbti": "INTJ",
     "zodiac": "摩羯座"
   },
   "tags": {
-    "personality": ["社恐但话痨", "深夜emo型", "纠结体"],
-    "lifestyle": ["咖啡依赖", "仪式感狂热者"]
+    "personality": ["社恐但愛說話", "深夜emo型", "猶豫不決"],
+    "lifestyle": ["咖啡依賴", "儀式感狂熱者"]
   },
-  "impression": "对自己要求很高，但总是拖到最后一刻才行动",
+  "impression": "對自己要求很高，但總是拖到最後一刻才行動",
   "memory_sources": [
     "memories/chats/wechat_2024_export.txt",
     "memories/notes/2025_diary.md",
@@ -324,45 +324,45 @@ create-yourself/                    # meta-skill
 }
 ```
 
-### `selves/{slug}/SKILL.md` 结构
+### `selves/{slug}/SKILL.md` 結構
 
 ```markdown
 ---
 name: self_{slug}
-description: {name}，{age}岁，{occupation}，{city}
+description: {name}，{age}歲，{occupation}，{city}
 user-invocable: true
 ---
 
 # {name}
 
-{age}岁，{occupation}，{city}
+{age}歲，{occupation}，{city}
 
 ---
 
-## PART A：自我记忆
+## PART A：自我記憶
 
-{self.md 内容}
+{self.md 內容}
 
 ---
 
 ## PART B：人物性格
 
-{persona.md 内容}
+{persona.md 內容}
 
 ---
 
-## 运行规则
+## 運行規則
 
-接收到任何消息时：
-1. 先用 PART B 判断：你会怎么回应？什么态度？
-2. 再用 PART A 补充：结合你的经历和价值观
-3. 输出时始终保持 PART B 的表达风格
-4. PART B Layer 0 规则优先级最高，任何情况下不得违背
+接收到任何消息時：
+1. 先用 PART B 判斷：你會怎麼回應？什麼態度？
+2. 再用 PART A 補充：結合你的經歷和價值觀
+3. 輸出時始終保持 PART B 的表達風格
+4. PART B Layer 0 規則優先級最高，任何情況下不得違背
 ```
 
 ---
 
-## 实现优先级
+## 實作優先級
 
 ### P0 — MVP
 - [x] `create-yourself/SKILL.md` 主流程
@@ -372,13 +372,13 @@ user-invocable: true
 - [x] `tools/skill_writer.py`
 - [x] `tools/version_manager.py`
 
-### P1 — 数据接入
+### P1 — 數據接入
 - [x] `tools/wechat_parser.py`
 - [x] `tools/qq_parser.py`
 - [x] `tools/social_parser.py`
 - [x] `tools/photo_analyzer.py`
 
-### P2 — 进化机制
+### P2 — 進化機制
 - [x] `prompts/correction_handler.md`
 - [x] `prompts/merger.md`
 
